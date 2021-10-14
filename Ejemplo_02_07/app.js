@@ -1,22 +1,18 @@
-const fs = require('fs');
-const READLINE = require('readline');
-const file = process.argv[2];
+const http = require('http');
 
-if (file === undefined)
-    throw `Error, debe indicar un archivo de entrada`;
+let options = {
+    host: 'google.com',
+    port: 80,
+    path: '/'
+};
 
-// Creamos un archivo de log
-let log = fs.createWriteStream('./output.log', { flags: 'w' });
+http.get(options, function (res) {
+    if (res.statusCode == 200) {
+        console.log(`Server ${options.host} OK`);
+    } else {
+        console.log(`Server ${options.host} KO`);
+    }
 
-const rl = READLINE.createInterface({
-    input: fs.createReadStream(file),
-    crlfDelay: Infinity
-});
-
-rl.on('line', (line) => {
-    log.write(new Date().toISOString() + ' - ' + line + '\t|\t[' + line.length + ' caracteres]\r\n');
-});
-
-rl.on('close', () => {
-    log.close();
+}).on('error', function (e) {
+    console.log(`Hay un error: ` + e.message);
 });
