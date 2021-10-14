@@ -1,18 +1,22 @@
-const http = require('http');
+const FILE = require('fs');
+const READLINE = require('readline');
+const file = process.argv[2];
 
-let options = {
-    host: 'google.com',
-    port: 80,
-    path: '/'
-};
+if (file === undefined)
+    throw `Error, debe indicar un archivo de entrada`;
 
-http.get(options, function (res) {
-    if (res.statusCode == 200) {
-        console.log(`Server ${options.host} OK`);
-    } else {
-        console.log(`Server ${options.host} KO`);
-    }
+let lines = 0;
 
-}).on('error', function (e) {
-    console.log(`Hay un error: ` + e.message);
+const rl = READLINE.createInterface({
+    input: FILE.createReadStream(file),
+    crlfDelay: Infinity
+});
+
+rl.on('line', (line) => {
+    ++lines;
+    console.log(`Número total de carácteres por línea: ${line.length}`);
+});
+
+rl.on('close', () => {
+    console.log(`Número total de líneas: ${lines}`);
 });
