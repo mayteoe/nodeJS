@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= title
+  p Hi! #{title}
+  |#[a(href="/create") Add new]
+  hr
+  div 
+    p #{values.length} items in DB
+    each item in values
+        li #{item.name} #{item.email} #[a(href="/update/#{item.id}") Edit] #[a(href="/delete/#{item.id}") Delete]
