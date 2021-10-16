@@ -27,7 +27,11 @@ const server = http.createServer((req, res) => {
 
     }
 });
-
+/*
+server.on(`error`, function (e) {
+    console.log(`Error`);
+});
+*/
 server.listen(port, hostname, () => {
     console.log(`Servidor funcionando en http://${hostname}:${port}/`);
 });
