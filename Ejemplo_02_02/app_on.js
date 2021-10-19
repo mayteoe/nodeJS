@@ -8,7 +8,6 @@ process.on(`uncaughtException`, function (err) {
 });
 
 console.log(`Hemos recibido ${process.argv.length} argumentos`);
-throw `Error inesperado durante la ejecución`;
+throw new Error(`Error inesperado durante la ejecución`);
 
 console.log(process.argv);
-
