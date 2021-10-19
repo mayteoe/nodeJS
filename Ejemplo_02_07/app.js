@@ -3,7 +3,7 @@ const READLINE = require('readline');
 const file = process.argv[2];
 
 if (file === undefined)
-    throw `Error, debe indicar un archivo de entrada`;
+    throw new Error(`Error, debe indicar un archivo de entrada`);
 
 let lines = 0;
 
