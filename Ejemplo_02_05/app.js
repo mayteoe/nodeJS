@@ -29,7 +29,7 @@ function _getNoRoute(res) {
 }
 
 function _getIndex(res) {
-    let file = fs.readFileSync('./public/index.html',)
+    let file = fs.readFileSync('./public/index.html');
     res.writeHeader(200, { "Content-Type": "text/html" });
     res.write(file);
     res.end();
@@ -43,6 +43,7 @@ function _getPost(req, res) {
         chunks.push(chunk);
     });
     req.on('end', () => {
+        console.log(chunks);
         const data = Buffer.concat(chunks);
         console.log(data.toString());
 
