@@ -1,4 +1,4 @@
-let count_limit = 100000;
+const count_limit = 100000;
 
 window.addEventListener("DOMContentLoaded", (event) => {
     initJS();
