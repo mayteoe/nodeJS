@@ -29,17 +29,10 @@ function _getNoRoute(res) {
 }
 
 function _getIndex(res) {
-    fs.readFile('./public/index.html', function (err, html) {
-        if (err) {
-            res.writeHeader(404, { "Content-Type": "text/html" });
-            res.write(`<h1>File not found</h1><small>${err}</small>`);
-            res.end();
-        }
-
-        res.writeHeader(200, { "Content-Type": "text/html" });
-        res.write(html);
-        res.end();
-    });
+    let file = fs.readFileSync('./public/index.html',)
+    res.writeHeader(200, { "Content-Type": "text/html" });
+    res.write(file);
+    res.end();
 }
 
 function _getPost(req, res) {
