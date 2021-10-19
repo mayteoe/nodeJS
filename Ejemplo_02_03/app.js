@@ -1,5 +1,4 @@
 const http = require('http');
-const path = require('path');
 const url = require('url');
 
 const hostname = '127.0.0.1';
