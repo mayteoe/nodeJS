@@ -27,7 +27,8 @@ let rutasProtegidas = router.use((req, res, next) => {
         jwt.verify(token, mykey, (err, decoded) => {
             if (err) {
                 return res.json({
-                    message: 'unauthorized'
+                    message: 'unauthorized',
+                    output: err.message
                 });
             } else {
                 req.decoded = decoded;
@@ -41,7 +42,7 @@ let rutasProtegidas = router.use((req, res, next) => {
     }
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true })); // {param1=valor1,param2=valor2} 
 app.use(bodyParser.json());
 app.use(log);
 
@@ -61,10 +62,11 @@ app.get('/', (req, res) => {
 app.post('/auth', (req, res) => {
     if (req.body.user === "nodejs" && req.body.password === "password") {
         const payload = {
-            check: true
+            check: true,
+            idUsuario: 1230492
         };
         const token = jwt.sign(payload, mykey, {
-            expiresIn: 30
+            expiresIn: 3600
         });
         res.json({
             status: true,
