@@ -3,6 +3,7 @@ const http = require('http');
 
 const hostname = config.HOST;
 const port = config.PORT;
+const env = config.NODE_ENV;
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
@@ -11,5 +12,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, hostname, () => {
-    console.log(`Servidor funcionando en http://${hostname}:${port}/`);
+    console.log(`Servidor funcionando en http://${hostname}:${port}/ trabajando en ${env}`);
 });

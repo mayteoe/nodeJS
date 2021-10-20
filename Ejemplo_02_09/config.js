@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 
-// Cargamos el arhicvo .env
+// Cargamos el archivo .env
 dotenv.config();
 
 let config = {
