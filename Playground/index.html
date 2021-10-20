@@ -19,12 +19,22 @@
 <body>
     <h1>Playground</h1>
     <p>Archivo con controls HTML para su manejo y configuración mediante DOM y JavaScript.</p>
+    <a href="#" id="identificador">click</a>
     <hr />
 
     <div id="box_01"></div>
 
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () { console.log('DOM loaded'); }, false);
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log('DOM loaded');
+        }, false);
+
+        $(document).on('click', '#identificador', function (e) {
+            e.preventDefault();
+            alert('test');
+        });
     </script>
 </body>
 
