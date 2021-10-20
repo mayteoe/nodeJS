@@ -1,5 +1,5 @@
 module.exports.getSaludo = (date) => {
-    if (date === undefined || _parameterValid === false) {
+    if (date === undefined || _parameterValid(date) === false) {
         return 'Hola!';
     }
 
