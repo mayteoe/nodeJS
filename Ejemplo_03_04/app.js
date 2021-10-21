@@ -10,7 +10,11 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.render('pages/index', { title: 'Ejemplo Web' });
+    res.render('pages/index', { title: 'Ejemplo Web', _section: 'inicio' });
+});
+
+app.get('/info', (req, res) => {
+    res.render('pages/info.ejs', { _section: 'info' });
 });
 
 app.listen(port, () => {

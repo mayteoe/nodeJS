@@ -14,8 +14,9 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/">Inicio <span class="sr-only">(current)</span></a></li>
-                    <li><a href="/info">Información</a></li>
+                    <li <% if(_section=='inicio' ) { %> class="active" <% } %>><a href="/">Inicio <span
+                                    class="sr-only">(current)</span></a></li>
+                    <li <% if(_section=='info' ) { %> class="active" <% } %>><a href="/info">Información</a></li>
                 </ul>
             </div>
         </div>
