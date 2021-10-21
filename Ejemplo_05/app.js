@@ -1,6 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
 const express = require('express');
-const bp = require('body-parser')
 const path = require('path');
 
 const app = express();
@@ -32,22 +31,26 @@ function _initDB() {
 }
 
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-app.use(bp.urlencoded());
+app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
+    res.render('pages/index', { title: 'Crud Sample', _section: 'inicio' })
+});
+
+app.get('/list', (req, res) => {
     // Obtenemos los valores de la DB
     db.all(`SELECT * FROM "clients";`, [], (err, rows) => {
         if (err) {
             throw err;
         }
         let values = rows;
-        res.render('index', { title: 'CRUD Sample', values: values });
+        res.render('pages/list', { title: 'List', values: values, _section: 'list' });
     });
 });
 
 app.get('/create', (req, res) => {
-    res.render('create', { title: 'CRUD Sample - Create client' });
+    res.render('pages/create', { title: 'Create', _section: 'create' });
 });
 
 app.post('/create', (req, res) => {
@@ -55,7 +58,7 @@ app.post('/create', (req, res) => {
     let email = req.body.email;
     db.prepare(`INSERT INTO "clients" ('name', 'email') VALUES ('${name}', '${email}');`).run().finalize();
 
-    res.redirect('/');
+    res.redirect('/list');
 });
 
 app.get('/delete/:id', (req, res) => {
@@ -68,7 +71,7 @@ app.get('/delete/:id', (req, res) => {
                 throw err;
             }
 
-            res.redirect('/');
+            res.redirect('/list');
         });
     }
 });
@@ -86,7 +89,7 @@ app.get('/update/:id', (req, res) => {
                 res.redirect('/');
             } else {
                 let value = rows[0];
-                res.render('edit', { title: 'CRUD Sample - Edit client', value: value });
+                res.render('pages/edit', { title: 'Update', value: value, _section: 'edit' });
             }
         });
     }
@@ -101,5 +104,5 @@ app.post('/update/:id', (req, res) => {
         db.prepare(`UPDATE "clients" SET name='${name}', 'email'='${email}' WHERE id=${parseInt(id)};`).run().finalize();
     }
 
-    res.redirect('/');
+    res.redirect('/list');
 });
