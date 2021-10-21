@@ -10,12 +10,17 @@ const router = express.Router();
 const port = 8080;
 
 // Configuracion
-const logFile = fs.createWriteStream('./output.log', { flags: 'w' });
+const logFile = fs.createWriteStream('./output.log', { flags: 'a' });
 const mykey = 'miclavesecreta';
 
 // Middleware para logear todas las peticiones que vienen al servidor
 let log = ((req, res, next) => {
-    logFile.write(new Date().toISOString() + `Request recived\r\n`);
+    let date = new Date();
+    let method = req.method;
+    let path = req.url;
+    let user_agent = req.headers['user-agent'];
+
+    logFile.write(`${date.toISOString()}\t${method}\t${path}\t${user_agent}\r\n`);
     next();
 });
 
