@@ -1,2 +1,2 @@
-const variable="Hola mundo";
+const variable="Hola mundo2";
 console.log(variable);
