@@ -29,7 +29,7 @@ let checkAuth = ((req, res, next) => {
 })
 
 app.post('/auth', (req, res) => {
-    if (req.body.user == 'user1' && req.body.password == 'password') ||
+    if ((req.body.user == 'user1' && req.body.password == 'password') ||
     (req.body.user =='user2' && req.body.password =='password')) {
         let payload = {};
         if (req.body.user ='user1'){
