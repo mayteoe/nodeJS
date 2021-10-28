@@ -1,0 +1,33 @@
+<%- include('../partials/header.ejs'); %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+
+                <%if ( typeof(_errorMessage) !="undefined" ) { %>
+                    <div class="alert alert-danger">
+                        <%= _errorMessage %>
+                    </div>
+                    <% } %>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Login</div>
+                            <div class="panel-body">
+                                <form name="formLogin" method="post" action="/login">
+                                    <label>Email</label>
+                                    <input type="text" name="email" placeholder="Email" class="form-control">
+
+                                    <label>Password</label>
+                                    <input type="password" name="password" placeholder="Password" class="form-control">
+
+                                    <button type="submit" name="btnSubmit" class="btn btn-primary">Login</button>
+                                </form>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <%- include('../partials/footer.ejs'); %>

@@ -31,10 +31,19 @@ let checkAuth = ((req, res, next) => {
 
 
 app.post('/auth', (req, res) => {
-    if (req.body.user == 'usuario' && req.body.password == 'password') {
-        let payload = {
-            permissions: ['read', 'write']
-        };
+    if ((req.body.user == 'user1' && req.body.password == 'password') ||
+        (req.body.user == 'user2' && req.body.password == 'password')) {
+
+        let payload = {};
+        if (req.body.user == 'user1') {
+            payload = {
+                permissions: ['read', 'write', 'delete']
+            };
+        } else if (req.body.user == 'user2') {
+            payload = {
+                permissions: ['read']
+            };
+        }
 
         const token = jwt.sign(payload, MI_CLAVE, {
             expiresIn: 3600

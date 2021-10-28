@@ -1,0 +1,43 @@
+<%- include('../partials/header') %>
+
+    <% if(typeof(_successMessage) !='undefined' ) { %>
+        <p class="alert alert-success">
+            <%= _successMessage %>
+        </p>
+        <% } %>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <h1>List</h1>
+
+                        <table class="table table-hover table-stripped">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1</td>
+                                    <td>Usuario 1</td>
+                                    <td>email@usuario.com</td>
+                                    <td>
+                                        <a href="/edit/1" class="btn btn-default">Edit</a>
+                                        <a href="/delete/1" class="btn btn-default">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <%- include('../partials/footer') %>

@@ -1,0 +1,48 @@
+<%- include('../partials/header.ejs'); %>
+
+
+    <%if ( typeof(_message) !="undefined" ) { %>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert alert-success">
+                        <%= _message %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% } %>
+
+
+            <%if ( typeof(_cliente) !="undefined" ) { %>
+
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Edit</div>
+                                <div class="panel-body">
+                                    <form name="formEdit" method="post" action="/edit">
+                                        <input type="hidden" name="id" value="<%= _cliente.Id %>">
+
+                                        <label>Name</label>
+                                        <input type="text" name="name" placeholder="Name" class="form-control"
+                                            value="<%= _cliente.Nombre %>">
+
+                                        <label>Email</label>
+                                        <input type="text" name="email" placeholder="Email" class="form-control"
+                                            value="<%= _cliente.Email %>">
+
+                                        <button type="submit" name="btnSubmit" class="btn btn-primary">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <% } %>
+
+                    <%- include('../partials/footer.ejs'); %>
