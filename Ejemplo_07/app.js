@@ -2,9 +2,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const sessions = require('express-session');
-const e = require('express');
 const FileStore = require('session-file-store')(sessions);
 const sqlite3 = require('sqlite3').verbose();
+const emailValidator = require('email-validator');
 
 const app = express();
 const port = 8080;
@@ -99,27 +99,57 @@ app.get('/list', checkSession, (req, res) => {
 });
 
 app.get('/create', checkSession, (req, res) => {
-    res.render('pages/create', { _showMenu: true });
+    let _cliente = {}
+    _cliente.name = '';
+    _cliente.email = '';
+    res.render('pages/create', { _showMenu: true, _cliente: _cliente });
 });
 app.post('/create', checkSession, (req, res) => {
     let name = req.body.name;
-    let email = req.body.email;
+    let email = req.body.email.toLowerCase();
 
-    // TODO: Validar los datos de entrada y comprobar que el email es único
+    // Validar los datos de entrada y comprobar que el email es único
+    if (emailValidator.validate(email) == false) {
+        let _cliente = {}
+        _cliente.name = name;
+        _cliente.email = email;
 
+        res.render('pages/create', { _showMenu: true, _cliente: _cliente, _message: `El email ${email} no es correcto.` });
+    } else {
+        // Comprobamos que no hay usuarios duplicados en bbdd
+        db.all(`SELECT Id FROM "Clientes" WHERE Email=$email LIMIT 1;`, { $email: email }, (err, rows) => {
+            if (err) {
+                _message = 'Hay problemas con el servidor de base de datos.';
 
-    // Almacenamos en BD la información
-    let _message;
-    db.run(`INSERT INTO Clientes (Nombre, Email) VALUES ($name, $email);`, { $name: name, $email: email }, (err) => {
-        if (err) {
-            _message = 'Hay problemas con el servidor de base de datos.';
-            console.log(err);
-        } else {
-            _message = 'Se ha guardado correctamente.';
-        }
+                let _cliente = {}
+                _cliente.name = name;
+                _cliente.email = email;
 
-        _showList(req, res, _message)
-    });
+                res.render('pages/create', { _showMenu: true, _cliente: _cliente, _message: _message });
+            } else {
+                if (rows.length > 0) {
+                    let _cliente = {}
+                    _cliente.name = name;
+                    _cliente.email = email;
+                    res.render('pages/create', { _showMenu: true, _cliente: _cliente, _message: `El email ${email} está en uso por otro cliente.` });
+                } else {
+
+                    // Almacenamos en BD la información
+                    let _message;
+                    db.run(`INSERT INTO Clientes (Nombre, Email) VALUES ($name, $email);`, { $name: name, $email: email }, (err) => {
+                        if (err) {
+                            _message = 'Hay problemas con el servidor de base de datos.';
+                            console.log(err);
+                        } else {
+                            _message = 'Se ha guardado correctamente.';
+                        }
+
+                        _showList(req, res, _message)
+                    });
+                }
+            }
+        });
+    }
 });
 
 app.get('/edit/:id', checkSession, (req, res) => {
@@ -146,23 +176,51 @@ app.get('/edit/:id', checkSession, (req, res) => {
 app.post('/edit', checkSession, (req, res) => {
     let id = req.body.id;
     let name = req.body.name;
-    let email = req.body.email;
+    let email = req.body.email.toLowerCase();
 
-    // TODO: Validar los datos de entrada y comprobar que el email es único
+    // Validar los datos de entrada y comprobar que el email es único
+    if (emailValidator.validate(email) == false) {
+        let _cliente = {}
+        _cliente.Id = id;
+        _cliente.Nombre = name;
+        _cliente.Email = email;
+        let _message = `El email ${email} no es correcto.`
+        res.render('pages/edit', { _showMenu: true, _cliente: _cliente, _message: _message });
+    } else {
+        db.all(`SELECT Id FROM "Clientes" WHERE Email=$email AND Id != $id LIMIT 1;`, { $email: email, $id: id }, (err, rows) => {
+            if (err) {
+                _message = 'Hay problemas con el servidor de base de datos.';
 
+                let _cliente = {}
+                _cliente.Id = id;
+                _cliente.Nombre = name;
+                _cliente.Email = email;
 
-    // Actualizamos el usuario en BD
-    let _message;
-    db.run(`UPDATE Clientes SET Nombre = $name, Email = $email WHERE Id = $id;`, { $id: id, $name: name, $email: email }, (err) => {
-        if (err) {
-            _message = 'Hay problemas con el servidor de base de datos.';
-            console.log(err);
-        } else {
-            _message = 'Se ha actualizado correctamente.';
-        }
+                res.render('pages/edit', { _showMenu: true, _cliente: _cliente, _message: _message });
+            } else {
+                if (rows.length > 0) {
+                    let _cliente = {}
+                    _cliente.Id = id;
+                    _cliente.Nombre = name;
+                    _cliente.Email = email;
+                    res.render('pages/edit', { _showMenu: true, _cliente: _cliente, _message: `El email ${email} está en uso por otro cliente.` });
+                } else {
+                    // Actualizamos el usuario en BD
+                    let _message;
+                    db.run(`UPDATE Clientes SET Nombre = $name, Email = $email WHERE Id = $id;`, { $id: id, $name: name, $email: email }, (err) => {
+                        if (err) {
+                            _message = 'Hay problemas con el servidor de base de datos.';
+                            console.log(err);
+                        } else {
+                            _message = 'Se ha actualizado correctamente.';
+                        }
 
-        _showList(req, res, _message)
-    });
+                        _showList(req, res, _message)
+                    });
+                }
+            }
+        });
+    }
 });
 
 app.get('/delete/:id', checkSession, (req, res) => {

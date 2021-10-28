@@ -4,15 +4,25 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                <%if ( typeof(_message) !="undefined" ) { %>
+                    <div class="alert alert-info">
+                        <%= _message %>
+                    </div>
+                    <% } %>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">Create</div>
                     <div class="panel-body">
                         <form name="formCreate" method="post" action="/create">
                             <label>Name</label>
-                            <input type="text" name="name" placeholder="Name" class="form-control">
+                            <input type="text" name="name" placeholder="Name" class="form-control"
+                                value="<%= _cliente.name %>">
 
                             <label>Email</label>
-                            <input type="text" name="email" placeholder="Email" class="form-control">
+                            <input type="text" name="email" placeholder="Email" class="form-control"
+                                value="<%= _cliente.email %>">
 
                             <button type="submit" name="btnSubmit" class="btn btn-primary">Create</button>
                         </form>
